@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - Inventory MVP{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="text-white mb-0">
+                <i class="bi bi-box-seam"></i> Inventory MVP
+            </h4>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="{% url 'product_list' %}" class="nav-item active">
+                <i class="bi bi-list-check"></i> Products
+            </a>
+            <a href="{% url 'upload_detect' %}" class="nav-item">
+                <i class="bi bi-camera"></i> Upload/Detect
+            </a>
+            <a href="{% url 'invoice_list' %}" class="nav-item">
+                <i class="bi bi-receipt"></i> Invoices
+            </a>
+            <a href="{% url 'analytics' %}" class="nav-item">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <i class="bi bi-person-circle"></i> {{ user.username }}
+            </div>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm w-100 mt-2">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container-fluid p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-white">Products</h1>
+                <a href="{% url 'product_create' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add Product
+                </a>
+            </div>
+
+            <div class="card dark-card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>SKU</th>
+                                    <th>Category</th>
+                                    <th>Unit Price</th>
+                                    <th>Stock</th>
+                                    <th>Weekly Sales Est.</th>
+                                    <th>Profit Margin</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td><span class="badge bg-secondary">{{ product.sku }}</span></td>
+                                    <td>{{ product.category }}</td>
+                                    <td>${{ product.unit_price }}</td>
+                                    <td>
+                                        <span class="badge {% if product.stock > 10 %}bg-success{% elif product.stock > 0 %}bg-warning{% else %}bg-danger{% endif %}">
+                                            {{ product.stock }}
+                                        </span>
+                                    </td>
+                                    <td>{{ product.weekly_sales_estimate }}</td>
+                                    <td>{{ product.profit_margin|floatformat:2 }}</td>
+                                    <td>
+                                        <a href="{% url 'product_edit' product.pk %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{% url 'product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">No products found. <a href="{% url 'product_create' %}">Create one</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

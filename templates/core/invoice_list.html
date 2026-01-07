@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoices - Inventory MVP{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="text-white mb-0">
+                <i class="bi bi-box-seam"></i> Inventory MVP
+            </h4>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="{% url 'product_list' %}" class="nav-item">
+                <i class="bi bi-list-check"></i> Products
+            </a>
+            <a href="{% url 'upload_detect' %}" class="nav-item">
+                <i class="bi bi-camera"></i> Upload/Detect
+            </a>
+            <a href="{% url 'invoice_list' %}" class="nav-item active">
+                <i class="bi bi-receipt"></i> Invoices
+            </a>
+            <a href="{% url 'analytics' %}" class="nav-item">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <i class="bi bi-person-circle"></i> {{ user.username }}
+            </div>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm w-100 mt-2">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container-fluid p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-white">Invoices</h1>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="card dark-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-receipt"></i> All Invoices</h5>
+                    <span class="badge bg-primary">{{ invoices.count }} total</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Invoice No.</th>
+                                    <th>Date & Time</th>
+                                    <th>Total Amount</th>
+                                    <th>Items</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-primary fs-6">{{ invoice.invoice_no }}</span>
+                                    </td>
+                                    <td>
+                                        <div>{{ invoice.created_at|date:"Y-m-d" }}</div>
+                                        <small class="text-muted">{{ invoice.created_at|date:"H:i" }}</small>
+                                    </td>
+                                    <td>
+                                        <strong class="text-success fs-5">${{ invoice.total_amount }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">{{ invoice.items.count }} item{{ invoice.items.count|pluralize }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'invoice_detail' invoice.pk %}" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-eye"></i> View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-5">
+                                        <i class="bi bi-inbox display-1 d-block mb-3"></i>
+                                        <p class="fs-5 mb-0">No invoices found.</p>
+                                        <p class="text-muted">Generate an invoice from detection results.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

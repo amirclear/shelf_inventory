@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Product - Inventory MVP{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="text-white mb-0">
+                <i class="bi bi-box-seam"></i> Inventory MVP
+            </h4>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="{% url 'product_list' %}" class="nav-item active">
+                <i class="bi bi-list-check"></i> Products
+            </a>
+            <a href="{% url 'upload_detect' %}" class="nav-item">
+                <i class="bi bi-camera"></i> Upload/Detect
+            </a>
+            <a href="{% url 'invoice_list' %}" class="nav-item">
+                <i class="bi bi-receipt"></i> Invoices
+            </a>
+            <a href="{% url 'analytics' %}" class="nav-item">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <i class="bi bi-person-circle"></i> {{ user.username }}
+            </div>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm w-100 mt-2">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container-fluid p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-white">{{ action }} Product</h1>
+                <a href="{% url 'product_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="card dark-card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.name.id_for_label }}" class="form-label text-light">Product Name</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.sku.id_for_label }}" class="form-label text-light">SKU</label>
+                                {{ form.sku }}
+                                <small class="text-muted">Note: For detection to work, use SKUs like COKE-001, PEPSI-001, CHIPS-001, WATER-001</small>
+                                {% if form.sku.errors %}
+                                    <div class="text-danger">{{ form.sku.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.category.id_for_label }}" class="form-label text-light">Category</label>
+                                {{ form.category }}
+                                {% if form.category.errors %}
+                                    <div class="text-danger">{{ form.category.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.unit_price.id_for_label }}" class="form-label text-light">Unit Price</label>
+                                {{ form.unit_price }}
+                                {% if form.unit_price.errors %}
+                                    <div class="text-danger">{{ form.unit_price.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.stock.id_for_label }}" class="form-label text-light">Current Stock</label>
+                                {{ form.stock }}
+                                {% if form.stock.errors %}
+                                    <div class="text-danger">{{ form.stock.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.weekly_sales_estimate.id_for_label }}" class="form-label text-light">Weekly Sales Estimate</label>
+                                {{ form.weekly_sales_estimate }}
+                                {% if form.weekly_sales_estimate.errors %}
+                                    <div class="text-danger">{{ form.weekly_sales_estimate.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.profit_margin.id_for_label }}" class="form-label text-light">Profit Margin (0.00 - 1.00)</label>
+                                {{ form.profit_margin }}
+                                {% if form.profit_margin.errors %}
+                                    <div class="text-danger">{{ form.profit_margin.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Save
+                            </button>
+                            <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
