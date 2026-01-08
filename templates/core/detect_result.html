@@ -137,22 +137,17 @@
                 </div>
             </div>
 
-            {% if detected_items_list %}
-                {% for item in detected_items_list %}
-                    {% if item.product %}
-                        <div class="card dark-card mt-4">
-                            <div class="card-body text-center">
-                                <a href="{% url 'generate_invoice' detection.pk %}" class="btn btn-success btn-lg px-5">
-                                    <i class="bi bi-receipt"></i> Generate Invoice
-                                </a>
-                                <p class="text-muted mt-3 mb-0">
-                                    <small>This will create an invoice and deduct stock from inventory</small>
-                                </p>
-                            </div>
-                        </div>
-                        {% break %}
-                    {% endif %}
-                {% endfor %}
+            {% if has_products %}
+                <div class="card dark-card mt-4">
+                    <div class="card-body text-center">
+                        <a href="{% url 'generate_invoice' detection.pk %}" class="btn btn-success btn-lg px-5">
+                            <i class="bi bi-receipt"></i> Generate Invoice
+                        </a>
+                        <p class="text-muted mt-3 mb-0">
+                            <small>This will create an invoice and deduct stock from inventory</small>
+                        </p>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>
