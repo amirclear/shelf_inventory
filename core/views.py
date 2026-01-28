@@ -224,11 +224,15 @@ def detect_result(request, pk):
 
         detected_items_list.append(item_info)
 
+    # Check if there's at least one product found
+    has_products = any(item.get("product") for item in detected_items_list)
+    
     context = {
         "detection": detection,
         "detected_items": detected_items,
         "detected_items_list": detected_items_list,
         "warnings": warnings,
+        "has_products": has_products,
     }
     return render(request, "core/detect_result.html", context)
 
