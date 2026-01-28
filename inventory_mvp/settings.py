@@ -16,9 +16,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mvp-dev-key-change-in-production'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+RAILWAY_DOMAIN = os.getenv("RAILWAY_PUBLIC_DOMAIN")
+
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{RAILWAY_DOMAIN}",
+]
+
+ALLOWED_HOSTS = [
+    RAILWAY_DOMAIN,
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
